@@ -10,14 +10,14 @@
     width: 70%;
 }
 
-.main-container{
+.main-container {
     display: flex;
     width: 100%;
     margin-bottom: 35px;
     margin-top: 35px;
 }
 
-.form-container{
+.form-container {
     height: 370px;
     width: 35%;
     text-align: center;
@@ -50,7 +50,7 @@ li {
     padding: 8px;
     border-radius: 5px;
 }
-img{
+img {
     width: 50%;
 }
 
@@ -74,7 +74,7 @@ img{
     transform: scale(1.05);
 }
 
-.btn-delete{
+.btn-delete {
     background-color: red;
     color: black;
 }
@@ -86,17 +86,24 @@ img{
     margin: 7px;
 }
 
-.form{
+.form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.form-container p{
+.form-container p {
     margin: 0;
 }
 
-.form-container .btn{
+.form-container .btn {
     margin-top: 12px;
+}
+
+.form-container h1 {
+    border: 3px solid red;
+    padding: 10px;
+    margin: 0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }

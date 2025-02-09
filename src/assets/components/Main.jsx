@@ -134,7 +134,10 @@ import { useState, useEffect } from "react";
               }
               required
             />
-            <button type="submit" className="btn ">Salva</button>
+            <hr />
+            <button type="submit" className="btn ">
+              Salva
+            </button>
           </form>
         </div>
       </div>
