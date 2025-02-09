@@ -1,100 +1,128 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
+
 export default function Main() {
-  const [list, setList] = useState([]);
-  const [article, setArticle] = useState({
-    title: "",
-    autore: "",
-    contenuto: "",
-    select: "",
-    available: false,
-  });
-  const handleArticle = (fieldName, value) => {
-    setArticle((currentFormData) => ({
-      ...currentFormData,
-      [fieldName]: value,
-    }));
+  const [article, setArticle] = useState([]);
+
+  const initialData = {
+    name: "",
+    content: "",
+    image: "",
+    tags: "",
   };
-  const handleSubmit = (event) => {
+  useEffect(fetchArticle, []);
+  function fetchArticle() {
+    axios
+      .get("http://localhost:3000/bacheca")
+      .then((res) => setArticle(res.data));
+  }
+  function fetchDeleteArticle(id) {
+    axios.delete(`http://localhost:3000/bacheca/${id}`).then(() => {
+      setArticle((current) => current.filter((item) => item.id !== id));
+    });
+  }
+  const handleSubmitForm = (event) => {
     event.preventDefault();
-    setList((currentList) => [...currentList, article]);
-    setArticle({
-      title: "",
-      autore: "",
-      contenuto: "",
-      select: "",
-      available: false,
+    axios.post("http://localhost:3001/bacheca", article).then((response) => {
+      setUsers((currentUsers) => [...currentUsers, response.data]);
+      setArticle(initialData);
     });
   };
+  const handleFormArticle = (fieldName, value) => {
+    setArticle((currentFormData) => {
+      return { ...currentFormData, [fieldName]: value };
+    });
+  };
+  function deleteArticles() {
+    setArticle([]);
+  }
+  function addArticles() {
+    fetchArticle();
+  }
   return (
     <main>
-      <div className="container">
-        <h1>LISTA</h1>
-        <div className="list">
-          <ul>
-            {list.map((item) => (
-              <li key={item.title}>
-                {item.title} - {item.autore} - {item.contenuto} - {item.select}{" "}
-                - {item.available ? "disponibile" : "non disponibile"}
-              </li>
-            ))}
-          </ul>
-          <hr />
-          <form onSubmit={handleSubmit}>
+      <div className="main-container">
+        <div className="container">
+          <h1>LISTA</h1>
+          <div className="btn-container">
+            <button onClick={deleteArticles} className="btn">
+              DELETE
+            </button>
+            <button onClick={addArticles} className="btn">
+              MOSTRA LA LISTA
+            </button>
+          </div>
+          <div className="list">
+            <ul>
+              {article.map((item) => (
+                <li key={item.title}>
+                  <p>
+                    <strong>{item.title}</strong>
+                  </p>
+                  <p>{item.content}</p>
+                  <img src={item.image} alt={item.title} />
+                  <p>
+                    #
+                    {Array.isArray(item.tags)
+                      ? item.tags.join(" # ")
+                      : item.tags}
+                  </p>
+                  <button
+                    onClick={() => fetchDeleteArticle(item.id)}
+                    className="btn btn-delete"
+                  >
+                    DELETE
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="form-container">
+          <form onSubmit={handleSubmitForm} className="form">
             <input
               className="area-testo"
               type="text"
               placeholder="Inserisci il titolo"
               value={article.title}
-              onChange={(event) => handleArticle("title", event.target.value)}
-            />
-            <br />
-            <input
-              className="area-testo"
-              type="text"
-              placeholder="Inserisci l'autore"
-              value={article.autore}
-              onChange={(event) => handleArticle("autore", event.target.value)}
+              onChange={(event) =>
+                handleFormArticle("title", event.target.value)
+              }
             />
             <br />
             <input
               className="area-testo"
               type="text"
               placeholder="Inserisci il contenuto"
-              value={article.contenuto}
+              value={article.content}
               onChange={(event) =>
-                handleArticle("contenuto", event.target.value)
+                handleFormArticle("title", event.target.value)
               }
             />
             <br />
-            <label htmlFor="scelta">Scegli un'opzione:</label>
-            <select
-              className="select-area"
-              value={article.select}
-              onChange={(event) => handleArticle("select", event.target.value)}
-            >
-              <option value="" disabled>
-                Selezione opzione
-              </option>
-              <option value="FrontEnd">FrontEnd</option>
-              <option value="BackEnd">BackEnd</option>
-              <option value="UI">UI</option>
-              <option value="UX">UX</option>
-            </select>
+            <input
+              className="area-testo"
+              type="text"
+              placeholder="Inserisci un immagine"
+              value={article.image}
+              onChange={(event) =>
+                handleFormArticle("title", event.target.value)
+              }
+            />
             <br />
-            <label className="checkbox-area">
-              <p>Clicca se disponibile</p>
-              <input
-                type="checkbox"
-                value={article.available}
-                onChange={(event) =>
-                  handleArticle("available", event.target.checked)
-                }
-              />
-            </label>
-            <button className="btn">AGGIUNGI</button>
+            <input
+              className="area-testo"
+              type="text"
+              placeholder="Inserisci i tags di riconoscimetno"
+              value={article.tags}
+              onChange={(event) =>
+                handleFormArticle("title", event.target.value)
+              }
+            />
+            <button type="submit">Salva</button>
           </form>
         </div>
       </div>
     </main>
-  );
-}
+    );
+  }
