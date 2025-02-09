@@ -48,7 +48,7 @@ import { useState, useEffect } from "react";
           <h1>LISTA</h1>
           <div className="btn-container">
             <button onClick={deleteArticles} className="btn">
-              DELETE
+              CANCELLA
             </button>
             <button onClick={addArticles} className="btn">
               MOSTRA LA LISTA
