@@ -18,7 +18,13 @@
 }
 
 .form-container{
-    height: 350px;
+    height: 370px;
+    width: 35%;
+    text-align: center;
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    left: 0;
 }
 
 body {
@@ -85,4 +91,12 @@ img{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.form-container p{
+    margin: 0;
+}
+
+.form-container .btn{
+    margin-top: 12px;
 }

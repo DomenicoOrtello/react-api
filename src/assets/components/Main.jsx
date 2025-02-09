@@ -1,15 +1,17 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function Main() {
-  const [article, setArticle] = useState([]);
-
   const initialData = {
     name: "",
     content: "",
     image: "",
     tags: "",
   };
+  
+  export default function Main() {
+    const [article, setArticle] = useState([]);
+    const [user, setUser] = useState(initialData);
+  
   useEffect(fetchArticle, []);
   function fetchArticle() {
     axios
@@ -23,13 +25,13 @@ export default function Main() {
   }
   const handleSubmitForm = (event) => {
     event.preventDefault();
-    axios.post("http://localhost:3001/bacheca", article).then((response) => {
-      setUsers((currentUsers) => [...currentUsers, response.data]);
-      setArticle(initialData);
+    axios.post("http://localhost:3000/bacheca", user).then((response) => {
+      setArticle((currentUsers) => [...currentUsers, response.data]);
+      setUser(initialData);
     });
   };
   const handleFormArticle = (fieldName, value) => {
-    setArticle((currentFormData) => {
+    setUser((currentFormData) => {
       return { ...currentFormData, [fieldName]: value };
     });
   };
@@ -79,8 +81,11 @@ export default function Main() {
           </div>
         </div>
         <div className="form-container">
+        <h1>INSERISCI I DATI RICHIESTI</h1>
           <form onSubmit={handleSubmitForm} className="form">
+            <p>INSERISCI IL TITOLO</p>
             <input
+              id="title"
               className="area-testo"
               type="text"
               placeholder="Inserisci il titolo"
@@ -88,38 +93,48 @@ export default function Main() {
               onChange={(event) =>
                 handleFormArticle("title", event.target.value)
               }
+              required
             />
             <br />
+            <p>INSERISCI IL CONTENUTO</p>
             <input
+              id="content"
               className="area-testo"
               type="text"
               placeholder="Inserisci il contenuto"
               value={article.content}
               onChange={(event) =>
-                handleFormArticle("title", event.target.value)
+                handleFormArticle("content", event.target.value)
               }
+              required
             />
             <br />
+            <p>INSERISCI L'IMMAGINE</p>
             <input
+              id="image"
               className="area-testo"
               type="text"
               placeholder="Inserisci un immagine"
               value={article.image}
               onChange={(event) =>
-                handleFormArticle("title", event.target.value)
+                handleFormArticle("image", event.target.value)
               }
+              required
             />
             <br />
+            <p>INSERISCI I TAG</p>
             <input
+              id="tags"
               className="area-testo"
               type="text"
-              placeholder="Inserisci i tags di riconoscimetno"
+              placeholder="Inserisci i tags di riconoscimento"
               value={article.tags}
               onChange={(event) =>
-                handleFormArticle("title", event.target.value)
+                handleFormArticle("tags", event.target.value)
               }
+              required
             />
-            <button type="submit">Salva</button>
+            <button type="submit" className="btn ">Salva</button>
           </form>
         </div>
       </div>
